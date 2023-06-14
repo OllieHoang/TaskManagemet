@@ -23,15 +23,24 @@ export class TodoComponent implements OnInit {
     private datePipe: DatePipe,
     
   ){
-    this.todo = dataService.getTaskList();
+    
+    this.todo = dataService.getTaskTodo();
+    this.doing = dataService.getTaskDoing();
+    this.done = dataService.getTaskDone();
   };
 
   ngOnInit(): void {
+    this.dataService.taskListChange.subscribe((newTaskList) => {
+      this.todo = newTaskList;
+      this.todo = this.dataService.getTaskTodo();
+    });
   }
 
   // Open Dialog show details card
-  openTaskDetails(i : number){
-    const dialogRef = this.dialog.open(TaskdetailsComponent);
+  openTaskDetails(i : Task){
+    const dialogRef = this.dialog.open(TaskdetailsComponent,{
+      data : i
+    });
   }
   
   // Delete task (todo, doing, done)
@@ -54,12 +63,21 @@ export class TodoComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+
+      const task = event.previousContainer.data[event.previousIndex];
+
+      task.status = event.container.data === this.done 
+      ? 3 
+      : event.container.data === this.doing ? 2 : 1;
+
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
       );
+      console.log(this.dataService.getTaskList());
+      
     }
   }
 }

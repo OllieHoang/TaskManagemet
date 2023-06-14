@@ -2,8 +2,8 @@ import { Component, Inject, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Task } from '../model/task.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { DataService } from 'src/app/services/data-service.service';
 
 @Component({
   selector: 'app-taskdetails',
@@ -11,36 +11,29 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./taskdetails.component.scss']
 })
 export class TaskdetailsComponent {
-  // ttChange : string = '';
-  // desChange : string = '';
-  dateValue : string ='';
 
-  isEdit : boolean = true;  
-  dataChange : Task []=[];
-  date = new FormControl();
+  
+  formEditTask : FormGroup;
 
   constructor(
+    private fb : FormBuilder,
     public dialogRef: MatDialogRef<TaskdetailsComponent>,
-    private datePipe: DatePipe
+    private dataService: DataService,
+    @Inject(MAT_DIALOG_DATA) public data: Task,
   ){
-    
+    this.formEditTask = fb.group({
+      title : '',
+      description: '',
+      date: '',
+      status: 1
+    })
   };
 
   closeDetails(){
     this.dialogRef.close();
   }
 
-  onEdit(){
-    this.isEdit = !this.isEdit;
-  }
-
   onSave(){
-    // this.dataChange.push({
-    //   title: this.data.title,
-    //   description: this.data.description,
-    //   date: this.data.date,
-    // })
-    this.isEdit = !this.isEdit;
-    // this.dialogRef.close(...this.dataChange);
+    this.dataService.editTask(this.formEditTask.value)
   }
 }

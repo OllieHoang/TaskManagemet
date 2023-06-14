@@ -1,7 +1,6 @@
 <div cdkDropListGroup class="todo">
     <div class="example-container">
       <h2 style="text-align: center;">To do ({{todo.length}})</h2>
-      
       <div
         cdkDropList
         [cdkDropListData]="todo"
@@ -13,7 +12,7 @@
             <p>{{formatDate(item?.date)}}</p>
           </div>
           <div>
-            <button mat-icon-button color="primary" (click)="openTaskDetails(i)">
+            <button mat-icon-button color="primary" (click)="openTaskDetails(item)">
               <mat-icon>view_agenda</mat-icon>
             </button>
             <button mat-icon-button color="warn" (click)="deleteTask(item)">
@@ -26,7 +25,6 @@
   
     <div class="example-container">
       <h2 style="text-align: center;">Doing ({{doing.length}})</h2>
-  
       <div
         cdkDropList
         [cdkDropListData]="doing"
@@ -48,7 +46,6 @@
 
     <div class="example-container">
         <h2 style="text-align: center;">Done ({{done.length}})</h2>
-    
         <div
           cdkDropList
           [cdkDropListData]="done"
@@ -57,7 +54,7 @@
           <div class="example-box" *ngFor="let item of done, let i = index" cdkDrag>
             <div>
               <p>{{item?.title}}</p>
-              <p>{{item?.date}}</p>
+              <p>{{formatDate(item?.date)}}</p>
             </div>
             <div>
               <mat-icon class="iconDone">check_circle_outline</mat-icon>

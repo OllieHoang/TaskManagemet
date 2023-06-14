@@ -29,12 +29,13 @@ export class AddtodoComponent {
     constructor(
         private fb : FormBuilder,
         private dataService: DataService,
-      ) {
-      this.formAddTask = fb.group({
-        title : ['', Validators.required],
-        description: ['', Validators.required],
-        date: ['', Validators.required],
-      })
+      ){
+        this.formAddTask = fb.group({
+          title : ['', Validators.required],
+          description: ['', Validators.required],
+          date: ['', Validators.required],
+          status: 1
+        })
     }
 
     // Add data to dataService

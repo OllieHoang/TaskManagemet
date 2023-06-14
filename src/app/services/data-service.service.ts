@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, OnChanges, SimpleChanges } from '@angular/core';
 import { Task } from '../components/model/task.model';
 
 @Injectable({
@@ -23,28 +23,51 @@ export class DataService {
       title: "task 3",
       description: "111",
       date: new Date,
-      status: 1
+      status: 2
     }
   ];
-    
-  constructor() { }
-
-  //Get data
+  taskListChange: EventEmitter<any> = new EventEmitter();
+  constructor() {}
+  
+  //Get all data
   getTaskList() : Task[]{
     return this.taskList;
   }
 
+  //Get task status todo
+  getTaskTodo(): Task[]{
+    return this.taskList.filter(task => task.status === 1);
+  }
+
+  // Get task status doing
+  getTaskDoing(): Task[]{
+    return this.taskList.filter(task => task.status === 2);
+  }
+
+  // Get task status done
+  getTaskDone(): Task[]{
+    return this.taskList.filter(task => task.status === 3);
+  }
+
   // Update data
   setTaskList(newTask: Task): void{
-    this.taskList.push(newTask)
+    this.taskList.push(newTask);
+    this.taskListChange.emit(this.taskList);
   }
   
+  //Edit task
+  editTask(newTask: Task): void{
+      this.deleteTask(newTask);
+      this.setTaskList(newTask);
+  }
+
   //delete data
   deleteTask(task: Task): void {
     const index = this.taskList.indexOf(task);
     if (index !== -1) {
       this.taskList.splice(index, 1);
     }
+    this.taskListChange.emit(this.taskList);
   }
 
   //Change status
