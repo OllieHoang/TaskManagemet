@@ -1,0 +1,28 @@
+<div class="container" fxLayout="column" fxLayoutAlign="none center">
+    <form  class="example-form" fxLayout="column"  fxLayoutAlign="space-between none" (ngSubmit) = "onSave()">
+        <div>
+            <mat-form-field class="example-full-width"  >
+                <mat-label>Title</mat-label>
+                <input matInput [disabled]="isEdit" >
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Description</mat-label>
+              <input matInput [disabled]="isEdit" >
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="dp" >
+                <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                <mat-datepicker #dp></mat-datepicker>
+              </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between end">
+            <button *ngIf="isEdit;else btnSave" mat-raised-button color="primary" (click)="onEdit()">Edit</button>
+            <ng-template #btnSave>
+                <button mat-raised-button color="primary" type="submit">Save</button>
+            </ng-template>
+            <button mat-raised-button (click)="closeDetails()">Cancel</button>
+        </div>
+    </form>
+    
+</div>
